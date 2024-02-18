@@ -4,7 +4,7 @@ import setuptools
 
 setup(
     name="akatsuki_kafka",
-    version="0.1.0",
+    version="0.1.1",
     author="Akatsuki",
     description="Kafka consumer & producer abstraction for Akatsuki",
     packages=setuptools.find_packages(),

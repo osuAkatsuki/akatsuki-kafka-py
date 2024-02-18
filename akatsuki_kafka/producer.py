@@ -1,6 +1,7 @@
 from aiokafka import AIOKafkaProducer
 
 from google.protobuf.message import Message
+from typing import Optional
 
 import logging
 import asyncio
@@ -12,7 +13,7 @@ class KafkaProducer:
     def __init__(self, bootstrap_servers: list[str]) -> None:
         self.bootstrap_servers = bootstrap_servers
 
-        self._producer: AIOKafkaProducer | None = None
+        self._producer: Optional[AIOKafkaProducer] = None
 
         self._lock = asyncio.Lock()
         self.should_shutdown = False
@@ -38,7 +39,7 @@ class KafkaProducer:
             await self._producer.start()
             logger.info("Started producer")
 
-    async def stop(self, reason: str | None = None) -> None:
+    async def stop(self, reason: Optional[str] = None) -> None:
         assert self._producer is not None
 
         logger.info("Stopping producer", extra={"reason": reason})

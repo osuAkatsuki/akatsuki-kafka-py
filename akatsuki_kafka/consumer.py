@@ -3,6 +3,7 @@ from aiokafka import AIOKafkaConsumer, ConsumerRecord
 from abc import abstractmethod
 from typing import Generic
 from typing import TypeVar
+from typing import Optional
 
 from google.protobuf.message import Message
 
@@ -25,7 +26,7 @@ class KafkaConsumer(Generic[MessageT]):
         self.bootstrap_servers = bootstrap_servers
         self.group_id = group_id
 
-        self._consumer: AIOKafkaConsumer | None = None
+        self._consumer: Optional[AIOKafkaConsumer] = None
 
         self._lock = asyncio.Lock()
         self.should_shutdown = False
@@ -56,7 +57,7 @@ class KafkaConsumer(Generic[MessageT]):
 
         await self._consume()
 
-    async def stop(self, reason: str | None = None) -> None:
+    async def stop(self, reason: Optional[str] = None) -> None:
         assert self._consumer is not None
 
         logger.info("Stopping consumer", extra={"reason": reason})
